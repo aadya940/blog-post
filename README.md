@@ -208,7 +208,7 @@ where the knots are.
 By the way, if you don't want to hand-pick the knots, NumPy gives you an easier option:
 
 ```python
->>> t = np.quantile(x, np.linspace(0, 1, 10)[1:-1], method="nearest")
+>>> t = clamp(np.quantile(x, np.linspace(0, 1, 10)[1:-1], method="nearest"))
 ```
 
 This places the knots at the quantiles of your data, so they end up dense wherever your data points are dense and sparse where they are sparse. The `method="nearest"` part makes every knot
