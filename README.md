@@ -4,19 +4,19 @@ A lot of things around us we take for granted are Smooth Curves, for example,
 - <i> This roller coaster is a smooth path </i>
 
 <div align="center">
-<img width="497" height="481" alt="image" src="https://github.com/user-attachments/assets/d589dc5a-3801-44cf-8e2e-89d311a14260" /> <br>
+<img width="497" height="481" alt="image" src="images/img_01.png" /> <br>
 </div>
 
 - <i> Your browser has paths defined for the beautiful fonts it renders such as </i>
 
 <div align="center">
-<img width="497" height="481" alt="image" src="https://github.com/user-attachments/assets/20c6eb63-7a18-46c7-a404-489ba25f3b1f" /> <br>
+<img width="497" height="481" alt="image" src="images/img_02.png" /> <br>
 </div>
 
 - <i> Gradient Maps: These are a special type of smooth paths where the input is luminosity (instead of time) and the output is in color space </i>
 
 <div align="center">
-<img width="497" height="481" alt="image" src="https://github.com/user-attachments/assets/9e1deb01-79c2-4905-81b0-6c0af1b797ee" /> <br>
+<img width="497" height="481" alt="image" src="images/img_03.png" /> <br>
 </div>
 
 These are smooth because their derivatives are continuous. The smoother the curve, the higher the order up to which its derivatives stay continuous.
@@ -32,8 +32,8 @@ rated, mostly we're always given examples of motion for mathematical smoothness 
 artist, M.C. Escher, who built a career out of smoothness, here is some of his artwork:
 
 <div align="center">
-<img width="497" height="600" alt="image" src="https://github.com/user-attachments/assets/ea0e2f19-ff60-4734-8058-bd4d58981fa5" /> <br> <br>
-<img width="497" height="481" alt="image" src="https://github.com/user-attachments/assets/74de746d-2197-48ee-ba4f-7d9e684915fb" />
+<img width="497" height="600" alt="image" src="images/img_04.png" /> <br> <br>
+<img width="497" height="481" alt="image" src="images/img_05.png" />
 </div>
 
 The mathematics of this was in fact later worked out in [this](https://pub.math.leidenuniv.nl/~smitbde/papers/2003-de_smit-lenstra-escher.pdf) paper.
@@ -45,7 +45,7 @@ Notice, the term "fit". Say you made a bunch of measurements, at each input <i>x
 noise. We want a smooth curve that follows these data points <i>(xi, yi)</i> without chasing the noise. We can fit one by minimizing this objective function:
 
 <div align="center">
-<img width="792" height="138" alt="image" src="https://github.com/user-attachments/assets/8dc06626-5383-4133-bff8-7760c8bdf06d" />
+<img width="792" height="138" alt="image" src="images/img_06.png" />
 </div>
 
 Here, $f(x)$ is the fitted curve, $f''$ is the second derivative of the same curve which measures how curvy or jumpy the curve
@@ -67,13 +67,13 @@ We're only assuming the cases that work on a <i>two-dimensional</i> plane for no
 So you can fit a smooth curve through a bunch of points using a spline and use $\lambda$ to control the amount of smoothing. With $\lambda = 0$, the curve interpolates the points, with $\lambda = \infty$ you get a straight line. Using this concept, you can start your artwork. Note that an image is just a bunch of horizontal or vertical lines stacked in order. So you can fit splines with separate $\lambda$'s and create images with focus on one particular object. Here is an example,
 
 <div align="center">
-<img width="700" height="600" alt="image" src="https://github.com/user-attachments/assets/43241dba-70c5-4797-a52a-e4a83fe511da" /> <br>
+<img width="700" height="600" alt="image" src="images/img_07.png" /> <br>
 </div>
 
 Or you can use Splines, as a paintbrush, here's another example:
 
 <div align="center">
-<img width="700" height="600" alt="image" src="https://github.com/user-attachments/assets/0a0e686d-5f9f-47ce-add9-77ca2ca2ac13" /> <br>
+<img width="700" height="600" alt="image" src="images/img_08.png" /> <br>
 </div>
 
 These have been built using <b>scipy.interpolate.make_smoothing_spline</b> function provided by the SciPy project which I had the pleasure to work on as an Intern (Summer, 2026) at Quansight Labs under Evgeni Burovski and Gagandeep Singh. Huge Shoutout to them!
@@ -91,7 +91,7 @@ On the good side, these matrices are often banded (<i>Because Piecewise, Only a 
 By the way, the matrix I'm talking about is called the "design matrix", It is built from the values of the basis elements at the data points. We solve the equation $y = X * c$ in the least squares sense (that is the $\lambda = 0$ limit of our objective), where $c$ are some coefficients that scale or squish the influence of some columns of the design matrix. And since each basis element is non-zero over only a few pieces, the fewer the knots, the smaller the dimension of $X$. Expanding it further, the closed-form solution to our minimization problem is given by this matrix equation:
 
 <div align="center">
-<img width="500" height="78" alt="image" src="https://github.com/user-attachments/assets/941d2b26-5239-4f77-bb65-0223cb78c0b8" />
+<img width="500" height="78" alt="image" src="images/img_09.png" />
 </div>
 
 Here, the new $\Omega$ is just the matrix form of the integral of the squared second derivative we saw earlier. <br> Now we have two options, either differentiate and integrate numerically every time to compute $\Omega$ or derive a general matrix form of $\Omega$ which circumvents this procedure, and once you have matrices with nice properties you can apply optimizations on them, inspect them etc. <br> So what is the matrix form and how to compute it? <br> That was about half of my internship. Deriving $\Omega$ using papers and books going back to the 1980's. Other implementations like the R programming language's libraries are GPL licensed, so we deliberately did not look at their source code (only used their numerical output as a black-box check). Apart from that, most of MATLAB, Octave, Julia etc. don't support user defined knot vectors either.
@@ -148,7 +148,7 @@ Let's fit 200,000 noisy samples of a smooth signal using just 12 interior knots:
 <div align="center">
 <br><br>
 
-<img width="1590" height="510" alt="image" src="https://github.com/user-attachments/assets/6bf6121c-20d8-4d3e-b215-f407221694ee" />
+<img width="1590" height="510" alt="image" src="images/img_10.png" />
 
 <br><br>
 </div>
@@ -183,7 +183,7 @@ both times with exactly 8 interior knots:
 <div align="center">
 <br><br>
 
-<img width="1590" height="510" alt="image" src="https://github.com/user-attachments/assets/fd078cd8-855f-4b72-be82-d96812a1249d" />
+<img width="1590" height="510" alt="image" src="images/img_11.png" />
 
 <br><br>
 </div>
@@ -217,7 +217,7 @@ knots too:
 
 <div align="center">
 <br><br>
-<img width="1590" height="510" alt="image" src="https://github.com/user-attachments/assets/8308c054-c15c-430a-999a-887c0cc9874c" />
+<img width="1590" height="510" alt="image" src="images/img_12.png" />
 <br><br>
 </div>
 
@@ -259,7 +259,7 @@ The knots work was the centerpiece, but a few other things happened around it:
 
 <i>Here is the spline it generates: </i>
 <br><br>
-<img width="880" height="495" alt="image" src="https://github.com/user-attachments/assets/55820829-9c75-4b75-9964-67e30798786f" />
+<img width="880" height="495" alt="image" src="images/img_13.png" />
 <br><br>
 
 The main implementation task was to solve a smaller system. A spline fitting problem has $m$ basis functions, where $m$ = len($t$) $- 4$, and each 
