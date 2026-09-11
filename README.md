@@ -7,7 +7,7 @@ A lot of things around us we take for granted are Smooth Curves, for example,
 
 - <i> Your browser has paths defined for the beautiful fonts it renders such as </i>
 
-<img width="497" height="481" alt="image" src="https://github.com/user-attachments/assets/02f862a3-43f5-4280-9f33-06a67dbc3ab2" /> <br>
+<img width="497" height="481" alt="image" src="https://github.com/user-attachments/assets/20c6eb63-7a18-46c7-a404-489ba25f3b1f" /> <br>
 
 - <i> Gradient Maps: These are a special type of smooth paths where the input is luminosity (instead of time) and the output is in color space </i>
 
