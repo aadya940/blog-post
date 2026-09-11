@@ -54,11 +54,11 @@ We're only assuming the cases that work on a <i>two-dimensional</i> plane for no
 
 So you can fit a smooth curve through a bunch of points using a spline and use $\lambda$ to control the amount of smoothing. With $\lambda = 0$, the curve interpolates the points, with $\lambda = \infty$ you get a straight line. Using this concept, you can start your artwork. Note that an image is just a bunch of horizontal or vertical lines stacked in order. So you can fit splines with separate $\lambda$'s and create images with focus on one particular object. Here is an example,
 
-<img width="700" height="600" alt="image" src="https://github.com/user-attachments/assets/985af957-96bf-4db0-9e02-170903948741" /> <br>
+<img width="700" height="600" alt="image" src="https://github.com/user-attachments/assets/43241dba-70c5-4797-a52a-e4a83fe511da" /> <br>
 
 Or you can use Splines, as a paintbrush, here's another example:
 
-<img width="700" height="600" alt="image" src="https://github.com/user-attachments/assets/c07b2777-8d83-4760-866f-79d84919347d" /> <br>
+<img width="700" height="600" alt="image" src="https://github.com/user-attachments/assets/0a0e686d-5f9f-47ce-add9-77ca2ca2ac13" /> <br>
 
 These have been built using <b>scipy.interpolate.make_smoothing_spline</b> function provided by the SciPy project which I had the pleasure to work on as an Intern (Summer, 2026) at Quansight Labs under Evgeni Burovski and Gagandeep Singh. Huge Shoutout to them!
 
@@ -70,7 +70,7 @@ It was internally assumed that $t$, the knots, are always equal to $x$, the data
 
 Expanding it further, in our case we're solving this particular equation:
 
-<img width="523" height="78" alt="image" src="https://github.com/user-attachments/assets/cf21988d-4465-4c16-a231-692302f2a346" />
+<img width="500" height="78" alt="image" src="https://github.com/user-attachments/assets/941d2b26-5239-4f77-bb65-0223cb78c0b8" />
 
 Here, the new $\Omega$ is just the matrix form of the integral of the squared second derivative we saw earlier. <br> Now we have two options, either differentiate and integrate numerically every time to compute $\Omega$ or derive a general matrix form of $\Omega$ which circumvents this procedure, and once you have matrices with nice properties you can apply optimizations on them, inspect them etc. <br> So what is the matrix form and how to compute it? <br> That was about half of my internship. Deriving $\Omega$ using papers and books going back to the 1980's. Other implementations like the R programming language's libraries are GPL licensed, so we deliberately did not look at their source code (only used their numerical output as a black-box check). Apart from that, most of MATLAB, Octave, Julia etc. don't support user defined knot vectors either.
 
