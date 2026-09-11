@@ -35,7 +35,7 @@ So hopefully, I convinced you smooth curves are interesting.
 
 Notice, the term "fit". We can fit a smooth curve on a bunch of data points <i>(xi, yi)</i> by minimizing this objective function:
 
-<img width="582" height="95" alt="image" src="https://github.com/user-attachments/assets/749d8993-e0b1-46f0-b20d-8cfc4141330e" />
+<img width="792" height="138" alt="image" src="https://github.com/user-attachments/assets/8dc06626-5383-4133-bff8-7760c8bdf06d" />
 
 Here, $f(x)$ is the fitted curve, $f''$ is the second derivative of the same curve which measures how curvy or jumpy the curve
 is. Hence, the first term in $J$ is how closely the curve fits the data, the second term is how jumpy/curvy the curve is and
