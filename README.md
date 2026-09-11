@@ -22,11 +22,9 @@ A lot of things around us we take for granted are Smooth Curves, for example,
 These are smooth because their derivatives are continuous. The smoother the curve, the higher the order up to which its derivatives stay continuous.
 For example, we know intuitively that this is smooth:
 
-<div align="center">
 $$
 y = \sin(x)
 $$
-</div>
 
 But mathematically you can differentiate $y = \sin(x)$ an infinite number of times and still get a continuous curve. More importantly, if the
 derivatives were discontinuous, the path would have sharp edges and applications like the roller coaster ride wouldn't be suitable. But smooth is under-
@@ -193,11 +191,9 @@ both times with exactly 8 interior knots:
 The data here is generated as function + noise, and the ground truth is just the function, without the noise. The RMSE is the root mean squared error between the fitted curve $f$ and 
 the ground truth $g$,
 
-<div align="center">
 $$
 \text{RMSE} = \sqrt{\frac{1}{n} \sum_i \big(f(x_i) - g(x_i)\big)^2}
 $$
-</div>
 
 so intuitively, it is the typical distance between the curve we fit and the curve we were trying to recover. The reference value to compare against is the noise level, the noise added 
 to the data has standard deviation `0.05`. The uniform knots give RMSE `0.053`, which means the fit misses the truth by about as much as the noise itself, so it recovered nothing beyond
