@@ -3,7 +3,7 @@
 A lot of things around us we take for granted are Smooth Curves, for example,
 - <i> This roller coaster is a smooth path </i>
 
-<img width="497" height="481" alt="image" src="https://github.com/user-attachments/assets/d589dc5a-3801-44cf-8e2e-89d311a14260" /> <br>
+<img width="497" height="481" alt="image" align="center" src="https://github.com/user-attachments/assets/d589dc5a-3801-44cf-8e2e-89d311a14260" /> <br>
 
 - <i> Your browser has paths defined for the beautiful fonts it renders such as </i>
 
