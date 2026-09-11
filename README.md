@@ -107,7 +107,7 @@ spl = make_smoothing_spline(x, y, t=my_knots)
 What this buys you:
 - <b> The solve is sized by your knots, not your data. </b> Remember the `1,000,000 x 1,000,000` matrix from before? Pass 100 knots and the system is roughly `100 x 100` (banded, on top of that), no matter how many points you have. The data only enters through small products like $X^T y$.
 - <b> You decide where the flexibility goes. </b> Knots are where the curve is allowed to bend. Put more of them where your data actually does something and few where it is quiet. Every image in this post uses that control.
-- <b> $\lambda$ = None still works. </b> The GCV search was re-derived for arbitrary knots, so automatic smoothing is not a $t = x$ exclusive anymore.
+-  $\lambda$ <b>= None still works. </b> The GCV search was re-derived for arbitrary knots, so automatic smoothing is not a $t = x$ exclusive anymore.
 - <b> Nothing changes if you don't opt in. </b> Leave $t$ out and you get exactly the old behavior. In fact the test suite demands it: with knots at the data and the same $\lambda$, the new path reproduces the old one to about `1e-12`, and the penalty matrix $\Omega$ is computed in closed form, no quadrature error to budget for.
 
 The feature lives in [scipy/scipy#25862](https://github.com/scipy/scipy/pull/25862) and the GCV follow-up is in review, so it makes its way to a SciPy release near you soon.
