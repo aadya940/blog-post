@@ -241,6 +241,54 @@ the dimensionless variable, so the fixed window works for everyone. This also
 addresses a long-standing SciPy issue where the old search failed on data
 with large or small $x$ scales.
 
+### Beyond the main feature
+
+The knots work was the centerpiece, but a few other things happened around it:
+- Add `clamp_values` keyword argument in `make_lsq_spline`. The `clamp_values` is a two tuple (ci, cf) where
+  `ci` is the y-coordinate of the start of the spline and `cf` is the y-coordinate of the end of the spline.
+  This is useful when you know where your spline should start and end. For example,
+
+```python
+>>> import numpy as np
+>>> import matplotlib.pyplot as plt
+>>> from scipy.interpolate import make_lsq_spline
+>>> 
+>>> rng = np.random.default_rng(12345)
+>>> x = np.linspace(0, 10, 80)
+>>> y = np.sin(x) + 0.3 * rng.normal(size=len(x))
+>>>
+>>> k = 3
+>>> interior = np.linspace(1.5, 8.5, 6)
+>>> t = np.r_[[x[0]] * (k + 1), interior, [x[-1]] * (k + 1)]
+>>>
+>>> spl_free = make_lsq_spline(x, y, t, k)
+>>> spl_clamped = make_lsq_spline(x, y, t, k, clamp_values=(0.0, 0.0))
+```
+
+<i>Here is the spline it generates: </i>
+<br><br>
+<img width="880" height="495" alt="image" src="https://github.com/user-attachments/assets/55820829-9c75-4b75-9964-67e30798786f" />
+<br><br>
+
+The main implementation task was to solve a smaller system. A spline fitting problem has $m$ basis functions, where $m$ = len($t$) $- 4$, and each 
+basis function gets one coefficient, so we solve for a coefficient vector $c$ of length $m$. Now, at a clamped boundary only the first basis function is nonzero, 
+with $B_0(x[0]) = 1$, so the spline evaluated at the first point is simply $c_0$. The constraint spl($x[0]$) $= c$<i>i</i> therefore fixes $c_0 = c$<i>i</i> directly, and likewise 
+$c_{m-1} = c$<i>f</i> at the other end. So the clamp values feature effectively has to solve for only $m - 2$ coefficients, the two boundary ones are known before the solve even starts.
+
+Here is the PR: [scipy/scipy#25570](https://github.com/scipy/scipy/pull/25570)
+
+- Tutorial for `scipy.interpolate.make_smooth_spline`
+
+Here is the PR: [scipy/scipy#]()
+
+### Future Work
+
+SciPy still needs work on some features users may want, and I'm planning to work on them after the Quansight Internship. Here are a few likely candidates:
+
+- P-spline penalties, a cheaper discrete alternative to the exact integral penalty
+- Higher order derivative penalties, penalize the third derivative instead of the second when you care about smooth curvature itself
+- A `solver=` option, letting users pick the linear algebra backend for the fitting problem
+- Wrapping LAPACK's `dpbcon` in `scipy.linalg`, which gives a cheap condition number estimate from the Cholesky factor we already compute
 
 ### References
 
