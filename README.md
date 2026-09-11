@@ -3,7 +3,7 @@
 A lot of things around us we take for granted are Smooth Curves, for example,
 - <i> This roller coaster is a smooth path </i>
 
-<img width="497" height="481" alt="image" src="https://github.com/user-attachments/assets/5967621f-712c-4a59-8624-c122aa01dbc8" /> <br>
+<img width="497" height="481" alt="image" src="https://github.com/user-attachments/assets/d589dc5a-3801-44cf-8e2e-89d311a14260" /> <br>
 
 - <i> Your browser has paths defined for the beautiful fonts it renders such as </i>
 
@@ -25,8 +25,8 @@ derivatives were discontinuous, the path would have sharp edges and applications
 rated, mostly we're always given examples of motion for mathematical smoothness but it plays a huge role in aesthetics. There was a popular
 artist, M.C. Escher, who built a career out of smoothness, here is some of his artwork:
 
-<img width="497" height="600" alt="image" src="https://github.com/user-attachments/assets/b3d2386b-8a2b-46c8-a5a7-93b1888fda56" /> <br> <br>
-<img width="497" height="481" alt="image" src="https://github.com/user-attachments/assets/43619d00-3a04-40f7-a1b5-d3df571f216e" />
+<img width="497" height="600" alt="image" src="https://github.com/user-attachments/assets/ea0e2f19-ff60-4734-8058-bd4d58981fa5" /> <br> <br>
+<img width="497" height="481" alt="image" src="https://github.com/user-attachments/assets/74de746d-2197-48ee-ba4f-7d9e684915fb" />
 
 The mathematics of this was in fact later worked out in [this](https://pub.math.leidenuniv.nl/~smitbde/papers/2003-de_smit-lenstra-escher.pdf) paper.
 So hopefully, I convinced you smooth curves are interesting.
