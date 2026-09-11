@@ -118,7 +118,7 @@ Let's fit 200,000 noisy samples of a smooth signal using just 12 interior knots:
 
 <br><br>
 
-<img width="1590" height="510" alt="image" src="https://github.com/user-attachments/assets/70ddfecf-7191-4c10-b0ba-c1de2bc6855c" />
+<img width="1590" height="510" alt="image" src="https://github.com/user-attachments/assets/6bf6121c-20d8-4d3e-b215-f407221694ee" />
 
 <br><br>
 
@@ -143,7 +143,7 @@ both times with exactly 8 interior knots:
 
 <br><br>
 
-<img width="1590" height="510" alt="image" src="https://github.com/user-attachments/assets/737dd50d-ea72-4d84-920d-1503d353d3b0" />
+<img width="1590" height="510" alt="image" src="https://github.com/user-attachments/assets/fd078cd8-855f-4b72-be82-d96812a1249d" />
 
 <br><br>
 
@@ -163,7 +163,7 @@ knots too:
 ```
 
 <br><br>
-<img width="1590" height="510" alt="image" src="https://github.com/user-attachments/assets/5617d2e2-993b-4c4d-bd28-6ee28b2c6343" />
+<img width="1590" height="510" alt="image" src="https://github.com/user-attachments/assets/8308c054-c15c-430a-999a-887c0cc9874c" />
 <br><br>
 
 On the left is what happens internally. GCV asks, for each candidate $\lambda$,
