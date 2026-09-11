@@ -195,15 +195,7 @@ $$
 \text{RMSE} = \sqrt{\frac{1}{n} \sum_i \big(f(x_i) - g(x_i)\big)^2}
 $$
 
-so intuitively, it is the typical distance between the curve we fit and the curve we were trying to recover. The reference value to compare against is the noise level, the noise added 
-to the data has standard deviation `0.05`. The uniform knots give RMSE `0.053`, which means the fit misses the truth by about as much as the noise itself, so it recovered nothing beyond
-the data. The placed knots give `0.013`, four times below the noise level, so the fit genuinely recovers the underlying function.
-
-Same data, same $\lambda$, same number of coefficients, same everything. The uniform knots
-oversmooth the bump and wiggle around in the quiet region, RMSE against the truth
-is `0.053`. The placed knots are clustered around the bump, so the bump comes out
-clean and the rest stays calm, RMSE `0.013`. The small tick marks in the plots show
-where the knots are.
+so intuitively, it is the typical distance between the curve we fit and the curve we were trying to recover. The reference value to compare against is the noise level, the noise added to the data has standard deviation `0.05`. Same data, same $\lambda$, same number of coefficients, same everything, only the placement differs. The uniform knots oversmooth the bump and wiggle around in the quiet region, giving RMSE `0.053`, the fit misses the truth by about as much as the noise itself, so it recovered nothing beyond the data. The placed knots are clustered around the bump, so the bump comes out clean and the rest stays calm, giving RMSE `0.013`, four times below the noise level, so the fit genuinely recovers the underlying function. The small tick marks in the plots show where the knots are.
 
 By the way, if you don't want to hand-pick the knots, NumPy gives you an easier option:
 
@@ -244,7 +236,7 @@ with large or small $x$ scales.
 ### Beyond the main feature
 
 The knots work was the centerpiece, but a few other things happened around it:
-- Add `clamp_values` keyword argument in `make_lsq_spline`. The `clamp_values` is a two tuple (ci, cf) where
+- Add `clamp_values` keyword argument in `make_lsq_spline`. `clamp_values` is a 2-tuple (ci, cf) where
   `ci` is the y-coordinate of the start of the spline and `cf` is the y-coordinate of the end of the spline.
   This is useful when you know where your spline should start and end. For example,
 
