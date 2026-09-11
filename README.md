@@ -11,7 +11,7 @@ A lot of things around us we take for granted are Smooth Curves, for example,
 
 - <i> Gradient Maps: These are a special type of smooth paths where the input is luminosity (instead of time) and the output is in color space </i>
 
-<img width="497" height="481" alt="image" src="https://github.com/user-attachments/assets/09e87bac-d84d-46ff-8d24-b44916343fb5" /> <br>
+<img width="497" height="481" alt="image" src="https://github.com/user-attachments/assets/9e1deb01-79c2-4905-81b0-6c0af1b797ee" /> <br>
 
 These are smooth because their derivatives are continuous. The smoother the curve, the higher the order up to which its derivatives stay continuous.
 For example, we know intuitively that this is smooth:
