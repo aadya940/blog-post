@@ -33,7 +33,8 @@ So hopefully, I convinced you smooth curves are interesting.
 
 ### But, how do you fit a smooth curve?
 
-Notice, the term "fit". We can fit a smooth curve on a bunch of data points <i>(xi, yi)</i> by minimizing this objective function:
+Notice, the term "fit". Say you made a bunch of measurements, at each input <i>xi</i> you recorded a value <i>yi</i>, and the recordings carry some
+noise. We want a smooth curve that follows these data points <i>(xi, yi)</i> without chasing the noise. We can fit one by minimizing this objective function:
 
 <img width="792" height="138" alt="image" src="https://github.com/user-attachments/assets/8dc06626-5383-4133-bff8-7760c8bdf06d" />
 
@@ -41,8 +42,9 @@ Here, $f(x)$ is the fitted curve, $f''$ is the second derivative of the same cur
 is. Hence, the first term in $J$ is how closely the curve fits the data, the second term is how jumpy/curvy the curve is and
 $\lambda$ controls the amount of penalty to apply for bending.
 
-When you optimise $J$ over the space of all smooth functions, you get a Spline. For a more detailed derivation, consult [this](https://github.com/aadya940/scipy-bspline-testing/blob/main/B_Splines_with_arbitary_knots-gcv.pdf)
-paper.
+When you optimise $J$ over the space of all smooth functions, you get a Spline. For a more detailed derivation, consult the companion write-up 
+[I wrote during the internship](https://github.com/aadya940/scipy-bspline-testing/blob/main/B_Splines_with_arbitary_knots-gcv.pdf).
+
 
 ### Splines
 
@@ -72,14 +74,13 @@ But there is a tradeoff hiding in that choice. Internally, SciPy builds matrices
 
 On the good side, these matrices are often banded (<i>Because Piecewise, Only a few diagonals are non-zero </i>) with band size `k + 1` where `k` is the degree of each piece. Here, since $k$ is just $3$, the number of non-zero elements is $(k + 1) * (num. datapoints)$, in this case it's $4,000,000$.
 
-By the way, the matrix I'm talking about is called the "design matrix", It is the $X$ when solving the equation $y = X * c$ where $c$ are the coefficients that scale the influence of each column of the design matrix.
-Expanding it further, in our case we're solving this particular equation:
+By the way, the matrix I'm talking about is called the "design matrix", It is built from the values of the basis elements at the data points. We solve the equation $y = X * c$ in the least squares sense (that is the $\lambda = 0$ limit of our objective), where $c$ are some coefficients that scale or squish the influence of some columns of the design matrix. And since each basis element is non-zero over only a few pieces, the fewer the knots, the smaller the dimension of $X$. Expanding it further, the closed-form solution to our minimization problem is given by this matrix equation:
 
 <img width="500" height="78" alt="image" src="https://github.com/user-attachments/assets/941d2b26-5239-4f77-bb65-0223cb78c0b8" />
 
 Here, the new $\Omega$ is just the matrix form of the integral of the squared second derivative we saw earlier. <br> Now we have two options, either differentiate and integrate numerically every time to compute $\Omega$ or derive a general matrix form of $\Omega$ which circumvents this procedure, and once you have matrices with nice properties you can apply optimizations on them, inspect them etc. <br> So what is the matrix form and how to compute it? <br> That was about half of my internship. Deriving $\Omega$ using papers and books going back to the 1980's. Other implementations like the R programming language's libraries are GPL licensed, so we deliberately did not look at their source code (only used their numerical output as a black-box check). Apart from that, most of MATLAB, Octave, Julia etc. don't support user defined knot vectors either.
 
-SciPy did use matrices but they assume the $t$ = $x$ thing and hence, their matrices are more specialized than what the general case needs. The complete derivation is available in [this](https://github.com/aadya940/scipy-bspline-testing/blob/main/B_Splines_with_arbitary_knots-gcv.pdf) paper. Also, when $t$ = $x$ the design matrix was a square matrix, now it is not, so we can't apply some shortcuts we applied earlier. Furthermore, previously in SciPy you could pass $\lambda$ = None and SciPy would automatically find the appropriate one using an algorithm called Generalized Cross Validation (GCV). This algorithm assumed $t$ = $x$ as well, so I went on to derive the general case for that too. 
+SciPy did use matrices but they assume the $t$ = $x$ thing and hence, their matrices are more specialized than what the general case needs. The complete derivation is available in [my companion write-up](https://github.com/aadya940/scipy-bspline-testing/blob/main/B_Splines_with_arbitary_knots-gcv.pdf). Also, when $t$ = $x$ the design matrix was a square matrix, now it is not, so we can't apply some shortcuts we applied earlier. Furthermore, the fitted curve depends on the value of $\lambda$, so what is a good value of $\lambda$? The classic procedure is leave-one-out cross validation, drop one point, fit on the rest, check how well the fit predicts the dropped point, and repeat this for every point and every candidate $\lambda$. Accurate, but costly, you refit $n$ times per candidate. Generalized Cross Validation (GCV) is a shortcut that estimates the same score from a single fit. So previously in SciPy you could pass $\lambda$ = None and SciPy would automatically find the appropriate one using GCV. This algorithm assumes the $t$ = $x$ as well, so I went on to derive the general case for that as well.
 
 I spent some parts of the Internship on Optimizations. A few examples:
 - Whenever a matrix is a special type of matrix called a [Hermitian matrix](https://en.wikipedia.org/wiki/Hermitian_matrix) (symmetric, in our real-valued case) and positive definite, you can use SciPy's `solveh_banded` solver which is several times faster than the general `solve_banded` solver.
@@ -118,15 +119,16 @@ Let's fit 200,000 noisy samples of a smooth signal using just 12 interior knots:
 ```python
 >>> import numpy as np
 >>> from scipy.interpolate import make_smoothing_spline
-
 >>> rng = np.random.default_rng(42)
 >>> x = np.sort(rng.uniform(0, 1, 200_000))
 >>> y = 0.4 + 0.3*np.sin(5.1*x) + 0.2*np.sin(13.7*x + 0.8) \
 ...  + rng.normal(0, 0.25, x.size)
 >>>
->>> t = np.linspace(0, 1, 14)[1:-1]        # 12 interior knots
+>>> inner = np.linspace(0, 1, 14)[1:-1]    # 12 interior knots
+>>> t = np.concatenate([[x[0]]*4, inner, [x[-1]]*4])   # clamped boundary knots
 >>> spl = make_smoothing_spline(x, y, lam=1e-7, t=t)
 ```
+
 
 <br><br>
 
@@ -146,8 +148,16 @@ a signal which is mostly quiet except a sharp bump at `x = 0.7`. We fit it twice
 both times with exactly 8 interior knots:
 
 ```python
->>> t_uniform = np.linspace(0, 1, 10)[1:-1]
->>> t_placed  = np.array([0.25, 0.5, 0.62, 0.66, 0.70, 0.74, 0.78, 0.9])
+>>> rng = np.random.default_rng(42)
+>>> x = np.sort(rng.uniform(0, 1, 400))
+>>> y = 0.3 + 0.25*x + 0.45*np.exp(-((x - 0.7)/0.045)**2) \
+...  + rng.normal(0, 0.05, x.size)
+>>>
+>>> def clamp(inner):                      # boundary knots, multiplicity 4
+...     return np.concatenate([[x[0]]*4, inner, [x[-1]]*4])
+>>>
+>>> t_uniform = clamp(np.linspace(x[0], x[-1], 10)[1:-1])
+>>> t_placed  = clamp(np.array([0.25, 0.5, 0.62, 0.66, 0.70, 0.74, 0.78, 0.9]))
 >>>
 >>> spl_u = make_smoothing_spline(x, y, lam=1e-9, t=t_uniform)
 >>> spl_p = make_smoothing_spline(x, y, lam=1e-9, t=t_placed)
@@ -159,11 +169,31 @@ both times with exactly 8 interior knots:
 
 <br><br>
 
-Same data, same $\lambda$, same number of coefficients. The uniform knots
+The data here is generated as function + noise, and the ground truth is just the function, without the noise. The RMSE is the root mean squared error between the fitted curve $f$ and 
+the ground truth $g$,
+
+$$
+\text{RMSE} = \sqrt{\frac{1}{n} \sum_i \big(f(x_i) - g(x_i)\big)^2}
+$$
+
+so intuitively, it is the typical distance between the curve we fit and the curve we were trying to recover. The reference value to compare against is the noise level, the noise added 
+to the data has standard deviation `0.05`. The uniform knots give RMSE `0.053`, which means the fit misses the truth by about as much as the noise itself, so it recovered nothing beyond
+the data. The placed knots give `0.013`, four times below the noise level, so the fit genuinely recovers the underlying function.
+
+Same data, same $\lambda$, same number of coefficients, same everything. The uniform knots
 oversmooth the bump and wiggle around in the quiet region, RMSE against the truth
 is `0.053`. The placed knots are clustered around the bump, so the bump comes out
 clean and the rest stays calm, RMSE `0.013`. The small tick marks in the plots show
 where the knots are.
+
+By the way, if you don't want to hand-pick the knots, NumPy gives you an easier option:
+
+```python
+>>> t = np.quantile(x, np.linspace(0, 1, 10)[1:-1], method="nearest")
+```
+
+This places the knots at the quantiles of your data, so they end up dense wherever your data points are dense and sparse where they are sparse. The `method="nearest"` part makes every knot
+exactly on one of your data sites, which guarantees each knot interval actually contains data, so the fit is always well posed.
 
 #### Tutorial 3: Don't pick lambda at all
 If picking knots by hand felt like work, picking $\lambda$ is worse, nobody has
